@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My HCI Portfolio</title>
+  <meta name="description" content="HCI-focused portfolio showcasing case studies, UX research, and prototypes." />
+
+  <style>
+    /* =========================
+       Minimal, mobile-first CSS
+       (No external libraries)
+       ========================= */
+    :root {
+      --bg: #0f172a;        /* slate-900 */
+      --panel: #111827;     /* gray-900 */
+      --text: #e5e7eb;      /* gray-200 */
+      --muted: #9ca3af;     /* gray-400 */
+      --brand: #22d3ee;     /* cyan-400 */
+      --accent: #a78bfa;    /* violet-400 */
+      --card: #111827;      /* gray-900 */
+      --card-border: #1f2937; /* gray-800 */
+      --link: #38bdf8;      /* sky-400 */
+    }
+    
+    /* Light mode variables (applied when body:not(.dark)) */
+    body:not(.dark) {
+      --bg: #f8fafc;        /* slate-50 */
+      --panel: #ffffff;     /* white */
+      --text: #0f172a;      /* slate-900 */
+      --muted: #475569;     /* slate-600 */
+      --brand: #06b6d4;     /* cyan-500 */
+      --accent: #7c3aed;    /* violet-600 */
+      --card: #ffffff;      
+      --card-border: #e5e7eb; 
+      --link: #0284c7;      /* sky-600 */
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* Layout helpers */
+    .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 1rem; }
+    .grid { display: grid; gap: 1rem; }
+    .grid-2 { grid-template-columns: 1fr; }
+    @media (min-width: 800px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+
+    /* Header / Nav */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(6px);
+      background: color-mix(in oklab, var(--panel) 70%, transparent);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: .75rem 1rem; }
+    .brand { font-weight: 700; letter-spacing: .3px; }
+    nav a { color: var(--muted); text-decoration: none; margin-left: 1rem; font-size: .95rem; }
+    nav a:hover { color: var(--text); }
+
+    /* Hero */
+    .hero { padding: 3rem 1rem 2rem; }
+    .hero h1 { font-size: clamp(1.6rem, 4vw, 2.6rem); margin: 0 0 .5rem; }
+    .pill { display: inline-flex; align-items: center; gap:.5rem; padding: .4rem .7rem; border: 1px solid var(--card-border); border-radius: 999px; font-size: .85rem; color: var(--muted); }
+    .hero p { color: var(--muted); max-width: 65ch; }
+    .cta { display: inline-block; margin-top: 1rem; padding: .7rem 1rem; background: var(--brand); color: #081018; border-radius: 12px; text-decoration:none; font-weight:600; }
+    .cta:hover { filter: brightness(.95); }
+
+    /* Section */
+    section { padding: 2rem 1rem; }
+    section h2 { margin: 0 0 1rem; font-size: 1.4rem; }
+
+    /* Cards */
+    .card { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; padding: 1rem; }
+    .muted { color: var(--muted); }
+
+    /* Skills list */
+    .tags { display:flex; flex-wrap: wrap; gap:.5rem; margin-top:.5rem; }
+    .tag { border: 1px dashed var(--card-border); padding:.35rem .6rem; border-radius: 999px; font-size:.85rem; color: var(--muted); }
+
+    /* Projects grid */
+    .projects { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+    @media (min-width: 700px) { .projects { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .projects { grid-template-columns: repeat(3, 1fr); } }
+
+    .case-card { display:flex; flex-direction: column; gap:.75rem; }
+    .thumb { aspect-ratio: 16/10; width: 100%; border-radius: 12px; object-fit: cover; border:1px solid var(--card-border); background: #0b1220; }
+    .case-title { font-weight: 700; }
+    .chips { display:flex; flex-wrap: wrap; gap:.4rem; }
+    .chip { font-size:.78rem; border:1px solid var(--card-border); padding:.25rem .5rem; border-radius:999px; color:var(--muted); }
+    .case-links { display:flex; gap:.5rem; margin-top:auto; }
+    .btn-sm { display:inline-block; padding:.5rem .7rem; border-radius:10px; border:1px solid var(--card-border); text-decoration:none; color:var(--text); }
+    .btn-sm:hover { border-color: var(--accent); }
+
+    /* Case study template section */
+    .case { display: grid; gap: 1rem; }
+    .case h3 { margin: .2rem 0; }
+    .case .cols { display:grid; gap:1rem; grid-template-columns: 1fr; }
+    @media (min-width: 900px) { .case .cols { grid-template-columns: 1fr 1fr; } }
+    .kpi { display:grid; grid-template-columns: repeat(2,1fr); gap:.75rem; }
+    .kpi div { border:1px dashed var(--card-border); border-radius:12px; padding:.6rem; text-align:center; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--card-border); padding: 2rem 1rem; color: var(--muted); text-align:center; }
+
+    /* Back to top */
+    #toTop { position: fixed; right: 1rem; bottom: 1rem; display:none; }
+
+    /* Accessibility helpers */
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip: rect(0,0,0,0); white-space:nowrap; border:0; }
+  </style>
+</head>
+<body class="dark">
+  <!-- Header / Nav -->
+  <header>
+    <div class="container nav">
+      <nav>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+        <button id="modeBtn" class="btn-sm" aria-pressed="true" title="Toggle dark mode">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero container">
+    <img class="thumb" src="hci-portfolio-image/profile.jpeg" alt="HCI Prototype Project Thumbnail" />
+    <h1>Hi, I'm Cris John Laurio Batinga</h1>
+    <a class="cta" href="#projects">See my work</a>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="container">
+    <h2>About Me</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <p>
+          I'm a motorcycle mechanic passionate about repairing, maintaining, and upgrading motorcycles. My goal is to provide reliable service, ensure road safety, and help riders get the best performance from their bikes.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Skills</h3>
+        <ul>
+          <li>Engine troubleshooting & repair</li>
+          <li>Electrical wiring and diagnostics</li>
+          <li>Brake & suspension system maintenance</li>
+          <li>Motorcycle customization & upgrades</li>
+          <li>Preventive maintenance services (oil change, tune-up, etc.)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Grid -->
+  <section id="projects" class="container">
+    <h2>Projects</h2>
+    <div class="projects">
+      <!-- CARD 1 -->
+      <article class="card case-card">
+        <img class="thumb" src="hci-portfolio-image/enginoverhaul.jpeg" alt="HCI Prototype Project Thumbnail" />
+        <div class="case-title">Engine Overhaul</div>
+        <p class="muted">Complete disassembly and rebuild of a 125cc engine to restore full power and fuel efficiency. </p>
+      </article>
+      <!-- CARD 2 -->
+      <article class="card case-card">
+        <img class="thumb" src="hci-portfolio-image/electricalrewiring.jpg" alt="HCI Prototype Project Thumbnail" />
+        <div class="case-title">Electrical Rewiring</div>
+        <p class="muted">Fixed faulty wiring and installed a new lighting system for better safety and visibility.</p>
+      </article>
+      <!-- CARD 3 -->
+      <article class="card case-card">
+        <img class="thumb" src="hci-portfolio-image/motorcyclecustomization.jpg" alt="HCI Prototype Project Thumbnail" />
+        <div class="case-title">Motorcycle Customization</div>
+        <p class="muted">Upgraded exhaust, suspension, and brakes for improved performance and a stylish new look.</p>
+      </article>
+  <!-- Contact -->
+  <section id="contact" class="container">
+    <div class="card">
+      <h2>Contact</h2>
+      <p class="muted">For motorcycle repair, maintenance, or customization services, feel free to reach out:</p>
+      <ul>
+        <li>Email: <a href="crisjohnbatinga@gmail.com">crisjohnbatinga@gmail.com</a></li>
+        <li>Facebook: <a href="#" target="_blank" rel="noopener">Cris John Laurio Batinga</a></li>
+        <li>Instagram: <a href="#" target="_blank" rel="noopener">superduperjano</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <button id="toTop" class="btn-sm" aria-label="Back to top">↑ Top</button>
+  <script>
+    // Dark mode toggle (persists in localStorage)
+    const modeBtn = document.getElementById('modeBtn');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const saved = localStorage.getItem('mode');
+    const setMode = (m) => {
+      document.body.classList.toggle('dark', m === 'dark');
+      modeBtn.textContent = m === 'dark' ? '🌙' : '☀️';
+      modeBtn.setAttribute('aria-pressed', m === 'dark');
+      localStorage.setItem('mode', m);
+    }
+    setMode(saved || (prefersDark ? 'dark' : 'light'));
+    modeBtn.addEventListener('click', () => {
+      const now = document.body.classList.contains('dark') ? 'light' : 'dark';
+      setMode(now);
+    });
+
+    // Back to top button
+    const toTop = document.getElementById('toTop');
+    window.addEventListener('scroll', () => {
+      toTop.style.display = window.scrollY > 600 ? 'block' : 'none';
+    });
+    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Year in footer
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
